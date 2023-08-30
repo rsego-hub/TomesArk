@@ -1,0 +1,23 @@
+#=Wall,.=Floor(char=1$),!=Exit(char=219,area_path=entrance.txt,dest_x=42,dest_y=8),F=Floor(char=F),o=Floor(char=o),r=Floor(char=r),B=Floor(char=B)
+A cute room for an amazing person
+   #!#    ###   
+  #...#  #...#  
+ #.....##.....# 
+ #............# 
+ #...For.B....# 
+  #..........#  
+   #........#   
+    #......#    
+     #....#     
+      #..#      
+       ##       
+-----------------------------------------------------------------------------------------
+First line contains comma seperated statements of what objects correspond to each symbol on the drawn map at the bottom. The most common option/parameter 
+for these objects is char, which is usually formatted as follows:
+   Thing(char=!,other=blah,other=blah blah)
+However, if a tileset id is preferrable, use the numerical id followed by a $
+   Thing(char=3$,other=blah,other=blah blah)
+
+Second line is the description of the room when the player uses the look action
+
+The remaining portion of the document contains the map. While no bugs caused by them have been documented, they are not accounted for in the code.
