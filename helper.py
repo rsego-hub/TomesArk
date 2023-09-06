@@ -18,6 +18,9 @@ def sign(val):
     else:
         return 0
 
+
+# Replaced by tcod.los.bresenham((x1, y1), (x2, y2)) kept as a monument to my lack of ability to read
+# the docs
 def line(first_coord, second_coord):
     if first_coord == second_coord: # If start and end is the same, line is just the coord
         return [second_coord]

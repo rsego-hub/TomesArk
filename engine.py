@@ -3,6 +3,7 @@ from copy import deepcopy
 import tcod
 from settings import VERBOSITY_LEVEL
 import helper
+import render_helper
 
 class Engine:
     def __init__(self, area: Area, player: Entity):
@@ -42,7 +43,7 @@ class Engine:
             self.area.map_add(push_dest_x, push_dest_y, thing)
 
     def move_player(self, new_x, new_y):
-         # Check if dest in_bounds
+        # Check if dest in_bounds
         if not self.area.in_bounds(new_x, new_y):
             return False
         
@@ -111,89 +112,35 @@ class Engine:
             
             event_handled = True
         return event_handled
+    
 
     def render(self, console: tcod.console.Console, context: tcod.context.Context) -> None:
         """Draw the player glyph."""
         console.clear()  # Clear the console before any drawing
 
-        console_center_x = console.width // 2
-        console_center_y = console.height // 2
-
         # Pull render distance from player light distance
         render_dist = self.player.light_range
-        #render_dist = 20
 
-        # Get farthest points as dicts key
-        farthest_dict = {}
-        for y_offset in range(-1*render_dist, render_dist+1):
-            for x_offset in range(-1*render_dist, render_dist+1):
+        # Find the sections of the map that should be displayed
+        renderable_dict = render_helper.make_inrange_coords_dict(self.player.x, self.player.y, render_dist)
+        render_set = render_helper.get_visible_coords(renderable_dict, self.area)
 
-                x_area = self.player.x - x_offset
-                y_area = self.player.y - y_offset
-
-                # Get outermost ring of tiles and get list of rows of tiles to them
-                # line function becomes innacurate above 13, so check all squares if further than that
-                distance = helper.distance([self.player.x, self.player.y], [x_area, y_area])
-                if distance <= render_dist:
-                    #value is a list of points in a line leading to it (inclsive of it as well)
-                    farthest_dict[(x_area,y_area)] = helper.line((self.player.x, self.player.y), (x_area,y_area))
-
-        #Go through each dict value, append coord to set if transparent, append then stop if it is
-        render_set = set()
-        for key in farthest_dict:
-            for coord in farthest_dict[key]:
-                if not self.area.in_bounds(coord[0], coord[1]):
-                    break
-                if self.area.map[coord][-1].transparent:
-                    render_set.add(coord)
-                else:
-                    render_set.add(coord)
-                    break
-
-        # Make sure entries are unique in list, then go through each coord and render map
-        for coord in render_set:
-            x_console = console_center_x + coord[0] - self.player.x
-            y_console = console_center_y + coord[1] - self.player.y
-            thing_list = self.area.map[coord]
-            if len(thing_list) > 0:
-                console.print(x_console, y_console, self.area.map[coord][-1].char)
-            else:
-                console.print(x_console, y_console, " ")
+        # Render map
+        render_helper.show_map(render_set, self.player.x, self.player.y, self.area, console)
         
-        # Render player
-        console.print(console_center_x, console_center_y, self.player.char)
-
-        # Render entities
-        for entity in self.entities:
-            x_offset_from_player = (entity.x - self.player.x)
-            y_offset_from_player = (entity.y - self.player.y)
-            if abs(x_offset_from_player) < render_dist and abs(y_offset_from_player) < render_dist:
-                x_console = (console.width // 2) + x_offset
-                y_console = (console.height // 2) + y_offset
-                console.print(x_console, y_console, entity.char)
-        
-        # Split look text
-        split_test_list = [""]
-        split_test_list_ind = 0
-        for word in self.text.split(" "):
-            # If text is longer than screen width, split into lines
-            if len(split_test_list[split_test_list_ind]) + len(word) + 1 < console.width:
-                split_test_list[split_test_list_ind] += word + " "
-            else:
-                split_test_list_ind += 1
-                split_test_list.append(word)
-
-        # Render text
-        for ind,line in enumerate(split_test_list):
-            console.print(console_center_x+1-(len(line)//2), console.height-len(split_test_list)+ind, line)
+        # Render player, entities, and text
+        console.print(console.width // 2, console.height // 2, self.player.char)
+        render_helper.show_entities(self.entities, self.player.x, self.player.y, render_dist, console)
+        render_helper.show_text(self.text, console)
 
         # Show in window/context
         context.present(console)  # Display the console on the window
 
+
     def entity_cycle(self):
         enemy_moved = False
 
-       # Move enemies
+        # Move enemies
         for entity in self.entities:
             # Only move if time move interval has passed
             if (time.time() - entity.last_move_time) < entity.move_interval:
@@ -264,5 +211,3 @@ class Engine:
         new_area.load_from_file(area_path)
         self.area = new_area
         self.entities = new_area.entity_list
-    
-    #def 

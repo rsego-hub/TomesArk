@@ -23,7 +23,7 @@ def main() -> None:
     # Open display
     context = tcod.context.new(width=console_char_width*32, height=console_char_height*32, console=console, tileset=tileset) 
     redraw = True # Redraw only when necessary
-    
+
     # Loop until game over status reached
     while not engine.is_game_over(console, context):  # Main loop
 
@@ -35,6 +35,9 @@ def main() -> None:
         # Check inputs and do player move logic, then check enemies and move them
         redraw = redraw or engine.handle_events(tcod.event.get(), context)
         redraw = redraw or engine.entity_cycle()
+
+        # Handle triggers
+        #redraw = redraw or engine.handle_triggers()
 
         # If on exit space, move to new area
         redraw = redraw or engine.exit_check_and_load()

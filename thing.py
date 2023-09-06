@@ -29,6 +29,11 @@ class Floor(Thing):
         super(Floor, self).__init__()
         self.char = char
 
+class Pressure_Plate(Floor):
+    def __init__(self, text=""):
+        super(Pressure_Plate, self).__init__()
+        self.text = text
+
 class Exit(Thing):
     def __init__(self, area_path: str, dest_x: int, dest_y: int, char=""):
         super(Exit, self).__init__()

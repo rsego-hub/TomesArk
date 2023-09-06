@@ -1,4 +1,4 @@
-0=Wall(char= ),x=Box(text=Loose rubble. It can be pushed aside.),#=Wall,1=Wall(char=178$,text=A crumbling wall),2=Wall(char=177$,text=A crumbling wall),3=Wall(char=176$,text=A crumbling wall),.=Floor,W=Floor(char=W),A=Floor(char=A),S=Floor(char=S),D=Floor(char=D),P=Floor(char=P),C=Floor(char=C),E=Floor(char=E),B=Floor(char=B),R=Floor(char=R),t=Floor(char=t),o=Floor(char=o),l=Floor(char=l),k=Floor(char=k),I=Window(char=I,text=An ancient pillar),!=Exit(char=177$,area_path=maps/secret_room.txt,dest_x=4,dest_y=1)
+0=Wall(char= ),x=Box(text=Loose rubble. It can be pushed aside.),#=Wall,1=Wall(char=178$,text=A crumbling wall),2=Wall(char=177$,text=A crumbling wall),3=Wall(char=176$,text=A crumbling wall),.=Floor,W=Floor(char=W),A=Floor(char=A),S=Floor(char=S),D=Floor(char=D),P=Floor(char=P),C=Floor(char=C),E=Floor(char=E),B=Floor(char=B),R=Floor(char=R),t=Floor(char=t),o=Floor(char=o),l=Floor(char=l),k=Floor(char=k),I=Window(char=I,text=An ancient pillar),!=Exit(char=177$,area_path=maps/secret_room.txt,dest_x=4,dest_y=1),?=Pressure_Plate(char=.,text=The ground feels unstable.)
 This place is the entrance to the ruins. Supposedly, there are valuable books below.
 ................#00000000000000000000000#####000000011##1000000000000000
 ................#00000000000000000000000#I.I100000001I.I1000000000000000
@@ -10,7 +10,7 @@ This place is the entrance to the ruins. Supposedly, there are valuable books be
 ................#00000000000000000000000#I.I#0000000#I.I#00000000111#111
 .....A.S.D......#############000#1##121##xx.###000#11...1121121#11.....2
 .....................I.....I#000#I.....Ix.x..I#000#I.....I.....I.......2
-.......@....................#000#.........x.x.#0001....................1
+.......@....................#000#.........x.x.#0001......?.............1
 .....................I....xI#000#I.....Ixxx.xI1000#I.....I.....I.......#
 ................#######...###000###...##1#1!211000##112211#1222121.....1
 ....SPACEBAR....#00000#IxI#0000000#I.I#000000000000000000000000001212211

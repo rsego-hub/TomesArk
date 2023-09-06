@@ -254,14 +254,16 @@ class Area:
             # Figure out which object
             if descript[2:].find("Wall") != -1: # If making wall
                 the_thing = Wall()
-            elif descript[2:].find("Floor") != -1: # If making floor
+            elif descript[2:].find("Floor") != -1: # Floor
                 the_thing = Floor()
-            elif descript[2:].find("Exit") != -1: # If making floor
+            elif descript[2:].find("Exit") != -1: # Exit
                 the_thing = Exit("", 0, 0)
-            elif descript[2:].find("Box") != -1: # If making box
+            elif descript[2:].find("Box") != -1: # Box
                 the_thing = Box()
-            elif descript[2:].find("Window") != -1: # If making window
+            elif descript[2:].find("Window") != -1: # Window
                 the_thing = Window()
+            elif descript[2:].find("Pressure_Plate") != -1: # Pressure plate
+                the_thing = Pressure_Plate()
 
             # Check for options
             options = re.findall(r'\(.*?\)', descript)
