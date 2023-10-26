@@ -75,7 +75,7 @@ class Engine:
         if not isinstance(event, tcod.event.KeyDown):
             return False
 
-        self.text = ""
+        #self.text = ""
 
         next_x, next_y = self.player.x, self.player.y
         if event.sym == tcod.event.KeySym.LEFT:
@@ -136,6 +136,14 @@ class Engine:
         # Show in window/context
         context.present(console)  # Display the console on the window
 
+    def handle_triggers(self):
+        triggerables = self.area.get_triggerables(self.player.x, self.player.y)
+        if len(triggerables) == 0:
+            return False
+        
+        for triggerable in triggerables:
+            if isinstance(triggerable, Pressure_Plate):
+                self.text = triggerable.text
 
     def entity_cycle(self):
         enemy_moved = False

@@ -68,6 +68,16 @@ class Area:
     
     def is_exit(self, x, y):
         return True in [isinstance(thing, Exit) for thing in self.map[(x, y)]]
+    
+    def get_triggerables(self, x, y):
+        triggerable = []
+
+        triggerable_objects = [Pressure_Plate]
+        for area_thing in self.map[(x,y)]:
+            for potential_thing in triggerable_objects:
+                if isinstance(area_thing, potential_thing):
+                    triggerable.append(area_thing)
+        return triggerable
 
     def in_bounds(self, x, y):
         if x < 0 or x >= self.size_x or y < 0 or y >= self.size_y:

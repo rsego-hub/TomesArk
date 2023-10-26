@@ -37,7 +37,7 @@ def main() -> None:
         redraw = redraw or engine.entity_cycle()
 
         # Handle triggers
-        #redraw = redraw or engine.handle_triggers()
+        redraw = redraw or engine.handle_triggers()
 
         # If on exit space, move to new area
         redraw = redraw or engine.exit_check_and_load()
