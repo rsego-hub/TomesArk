@@ -4,6 +4,9 @@ import tcod
 from settings import VERBOSITY_LEVEL
 import helper
 import render_helper
+import sound
+
+
 
 class Engine:
     def __init__(self, area: Area, player: Entity):
@@ -11,6 +14,9 @@ class Engine:
         self.area = area
         self.player = player
         self.text = ""
+
+        # Statistics
+        self.player_step_cnt = 0
 
     def push(self, new_x, new_y, thing):
         direction = ""
@@ -57,6 +63,9 @@ class Engine:
         # Check if there is pushable
         if pushable is not None:
             self.push(new_x, new_y, thing)
+
+        # Sound effect
+        self.player_step_cnt = sound.step(self.player_step_cnt)
 
         # Check for walkability, then move
         # Note: move_entity calls is_walkable which also checks for inbounds, which is unnecessary for the player since it's already been checked during
