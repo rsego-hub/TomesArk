@@ -2,7 +2,6 @@ from area import *
 from copy import deepcopy
 import tcod
 from settings import VERBOSITY_LEVEL
-import helper
 import render_helper
 import sound
 import animation

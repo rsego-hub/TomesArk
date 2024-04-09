@@ -3,7 +3,6 @@ import tcod.event
 from area import *
 from settings import VERBOSITY_LEVEL
 from engine import Engine
-import animation
 
 def main() -> None:
     # Pull tileset and declare console parameters
