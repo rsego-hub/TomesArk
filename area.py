@@ -70,12 +70,12 @@ class Area:
         return True in [isinstance(thing, Exit) for thing in self.map[(x, y)]]
     
     def get_triggerables(self, x, y):
-        triggerable = []
+        triggerables = []
 
         for area_thing in self.map[(x,y)]:
             if isinstance(area_thing, Triggerable):
-                triggerable.append(area_thing)
-        return triggerable
+                triggerables.append(area_thing)
+        return triggerables
 
     def in_bounds(self, x, y):
         if x < 0 or x >= self.size_x or y < 0 or y >= self.size_y:

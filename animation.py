@@ -2,17 +2,6 @@ import tcod
 import os
 import re
 import time
-# Head floating on this, gotta brainstorm
-# Animation takes control from user, no new events should be queued after this happens, and ideally 
-# it happens before the next tcod event can be processed, lends itself to an sdl event but I don't
-# know how that works, and it seems weird that an in-game event would interfere with the control
-# scheme
-
-# Player or timer or enemy does something, triggers animation
-# animation proceeds at set timing, each trigger changes map, makes redraw, and waits some set time
-# before map is changed again
-# once animation complete, actual playable map is returned and it allows normal event processing to 
-# proceed
 
 def play_animation(animation_folder, console: tcod.console.Console, context: tcod.context.Context) -> None:
     console.clear()

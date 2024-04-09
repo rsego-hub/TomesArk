@@ -1,9 +1,9 @@
 import tcod.console
 import tcod.event
 from area import *
-from copy import deepcopy
 from settings import VERBOSITY_LEVEL
 from engine import Engine
+import animation
 
 def main() -> None:
     # Pull tileset and declare console parameters
@@ -37,11 +37,10 @@ def main() -> None:
         redraw = redraw or engine.entity_cycle()
 
         # Handle triggers
-        redraw = redraw or engine.handle_triggers()
+        redraw = redraw or engine.handle_triggers(console, context)
+        
+        #animation.play_animation("./animation/fall/", console, context)
 
-        # If on exit space, move to new area
-        redraw = redraw or engine.exit_check_and_load()
-            
     # Wait for player to quit
     engine.handle_events(tcod.event.wait(), context)
     context.close()

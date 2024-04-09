@@ -1,0 +1,13 @@
+.=Thing(char= ),@=Thing()
+fall01.txt,0.2
+fall02.txt,0.2
+fall03.txt,0.2
+fall04.txt,0.2
+fall05.txt,0.2
+fall06.txt,0.2
+fall07.txt,0.2
+fall08.txt,0.2
+fall09.txt,0.2
+fall10.txt,0.2
+fall11.txt,0.2
+fall12.txt,0.2
