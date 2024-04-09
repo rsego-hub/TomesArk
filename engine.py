@@ -5,7 +5,7 @@ from settings import VERBOSITY_LEVEL
 import helper
 import render_helper
 import sound
-
+import animation
 
 
 class Engine:
@@ -49,6 +49,7 @@ class Engine:
             self.area.map_add(push_dest_x, push_dest_y, thing)
 
     def move_player(self, new_x, new_y):
+
         # Check if dest in_bounds
         if not self.area.in_bounds(new_x, new_y):
             return False
@@ -84,8 +85,6 @@ class Engine:
         if not isinstance(event, tcod.event.KeyDown):
             return False
 
-        #self.text = ""
-
         next_x, next_y = self.player.x, self.player.y
         if event.sym == tcod.event.KeySym.LEFT:
             next_x -= 1
@@ -105,26 +104,28 @@ class Engine:
             next_y += 1
         elif event.sym == tcod.event.KeySym.SPACE:
             self.text = self.area.get_look_text(self.player.x, self.player.y)
-        self.move_player(next_x, next_y)
+            return True
+        return self.move_player(next_x, next_y)
+
 
     def handle_events(self, events: list, context: tcod.context.Context):
+
         event_handled = False
         for event in events:  # Event loop, get all inputs/events
             if VERBOSITY_LEVEL >= 2:
                 print(event)
-            self.on_input(event)  # Pass events to the state
+            
+            event_handled |= self.on_input(event)  # Pass events to the state
 
             # End if player quit
             if isinstance(event, tcod.event.Quit):
                 context.close()
                 raise SystemExit()
-            
-            event_handled = True
+
         return event_handled
     
 
     def render(self, console: tcod.console.Console, context: tcod.context.Context) -> None:
-        """Draw the player glyph."""
         console.clear()  # Clear the console before any drawing
 
         # Pull render distance from player light distance
@@ -145,14 +146,29 @@ class Engine:
         # Show in window/context
         context.present(console)  # Display the console on the window
 
-    def handle_triggers(self):
+    def handle_triggers(self, console: tcod.console.Console, context: tcod.context.Context):
         triggerables = self.area.get_triggerables(self.player.x, self.player.y)
         if len(triggerables) == 0:
             return False
         
+        did_anything_trigger = False
         for triggerable in triggerables:
-            if isinstance(triggerable, Pressure_Plate):
+            if isinstance(triggerable, Text_Trigger):
                 self.text = triggerable.text
+                did_anything_trigger = True
+
+            elif isinstance(triggerable, Animation_Trigger):
+                animation.play_animation(triggerable.animation_folder, console, context)
+                did_anything_trigger = True
+
+            elif isinstance(triggerable, Exit):
+                exit = self.area.map[(self.player.x, self.player.y)][-1] # get the exit
+                self.player.x = exit.dest_x # update player info
+                self.player.y = exit.dest_y
+                self.load_area(exit.area_path)
+                did_anything_trigger = True
+            
+        return did_anything_trigger
 
     def entity_cycle(self):
         enemy_moved = False
@@ -211,16 +227,6 @@ class Engine:
             context.present(console)  # Display the console on the window
             return True
         
-        return False
-        
-    def exit_check_and_load(self):
-        # If on an exit
-        if self.area.is_exit(self.player.x, self.player.y):
-            exit = self.area.map[(self.player.x, self.player.y)][-1] # get the exit
-            self.player.x = exit.dest_x # update player info
-            self.player.y = exit.dest_y
-            self.load_area(exit.area_path)
-            return True
         return False
 
     def load_area(self, area_path):

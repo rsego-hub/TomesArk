@@ -72,11 +72,9 @@ class Area:
     def get_triggerables(self, x, y):
         triggerable = []
 
-        triggerable_objects = [Pressure_Plate]
         for area_thing in self.map[(x,y)]:
-            for potential_thing in triggerable_objects:
-                if isinstance(area_thing, potential_thing):
-                    triggerable.append(area_thing)
+            if isinstance(area_thing, Triggerable):
+                triggerable.append(area_thing)
         return triggerable
 
     def in_bounds(self, x, y):
@@ -244,7 +242,6 @@ class Area:
         # Read in text file
         with open(path) as f:
             lines = f.readlines()
-
         
         player = Player(0,0)# Create default Player
         char_lookup_dict = {}  # Create lookup dict
@@ -272,8 +269,8 @@ class Area:
                 the_thing = Box()
             elif descript[2:].find("Window") != -1: # Window
                 the_thing = Window()
-            elif descript[2:].find("Pressure_Plate") != -1: # Pressure plate
-                the_thing = Pressure_Plate()
+            elif descript[2:].find("Text_Trigger") != -1: # Pressure plate
+                the_thing = Text_Trigger()
 
             # Check for options
             options = re.findall(r'\(.*?\)', descript)
